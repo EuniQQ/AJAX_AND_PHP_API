@@ -7,15 +7,54 @@
     <title>XMLHttpRequest</title>
     <link rel="shortcut icon" href="#" type="image/x-icon">
     <link rel="stylesheet" href="style.css">
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+    <style>
+        .tytle{
+            border:1px solid black;
+            width:50%;
+            margin:auto;
+            padding:20px;
+        }
+
+        #list{
+            display:flex;
+            flex-wrap:wrap;
+        }
+
+        #list li {
+            width:400px;
+            margin:5px 10px;
+            padding:5px;
+            border:1px solid #999;
+        }
+
+        #list li div:nth-child(1){
+            font-weight:bolder;
+        }
+
+        #list li div:nth-child(2){
+            color:darkblue;
+        }
+
+        #list li div:nth-child(3){
+            font-size:12px;
+            float:right;
+        }
+        #list li:hover{
+            background-color:lightblue; 
+            border:1px solid rgb(105, 231, 179);
+        }
+    </style>
 </head>
 <body>
     <h1 class="header">XMLHttpRequest</h1>
     <div class="title"></div>
     <h4></h4>
-    <ul></ul>
+    <ul id="list"></ul>
 
 </body>
 </html>
+
 <script>
     /********************************************************
     * 1.api網址  https://kktix.com/events.json
@@ -26,14 +65,32 @@
     ********************************************************/
 
     //宣告一個XMLHttpRequest物件
-
+    var xhr=new XMLHttpRequest;  //xhr只是變數可隨意取名
 
     //建立請求的各項設定及實質內容
+    xhr.open('GET', 'https://kktix.com/events.json', true);
 
 
     //建立得到回應時的各項設定及行為
-
+    xhr.onload=function(){
+        let type=xhr.getResponseHeader('Content-Type');
+        let status=xhr.status;
+        let res=JSON.parse(xhr.responseText);  //綠色表示物件
+        $(".title").html(res.title)
+        res.entry.forEach(function(e,i)){
+            console.log(e.title)
+            list=list+`<li>
+                <div>${e.title}</div>
+                <div>${e.summary}</div>
+                <div>${e.content}</div>
+                    </li>`;
+        });
+            console.log(list)
+            $("#list")
+            console.log(type,status,res);
+        }
 
     //送出請求
+    xhr.send();
 
     </script>
